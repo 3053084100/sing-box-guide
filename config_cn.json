@@ -1,0 +1,48 @@
+{
+  "log": {
+    "level": "info",
+    "timestamp": true
+  },
+  "inbounds": [
+    {
+      "type": "shadowsocks",
+      "tag": "ss-in",
+      "listen": "::",
+      "listen_port": 22882,                     //放行的端口，与出口节点对应
+      "method": "2022-blake3-aes-128-gcm",
+      "password": "ogesw1gesec8nyfefewqFXgew==", //与出口节点对应密码
+      "tcp_fast_open": true
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "vless",
+      "tag": "vless-out",
+      "server": "192.1.1.1",                       //出口服务器IP地址
+      "server_port": 22444,                       //对应出口服务器设置的端口
+      "uuid": "485d2ced-5555-422b-5555-444f3fexced4",   //对应出口服务器的UUID
+      "flow": "xtls-rprx-vision",
+      "tcp_fast_open": true,
+      "tls": {
+        "enabled": true,
+        "server_name": "www.microsoft.com",       //对应出口服务器的伪装域名
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "ufdsfadafeawghh_fwfeasdRgweZffeaUgfsyo", //生成的公钥
+          "short_id": "1516165813584"          //对应的short ID
+        }
+      }
+    },
+    {
+      "type": "direct",
+      "tag": "direct"
+    }
+  ],
+  "route": {
+    "final": "vless-out"
+  }
+}
