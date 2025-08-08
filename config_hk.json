@@ -1,0 +1,46 @@
+{
+  "log": {
+    "level": "info",
+    "timestamp": true
+  },
+  "inbounds": [
+    {
+      "type": "vless",
+      "tag": "vless-in",
+      "listen": "::",
+      "listen_port": 443,                      //这里随便填一个高位端口
+      "tcp_fast_open": true,
+      "sniff": true,
+      "users": [
+        {
+          "uuid": "",                         //自动生成的UUID
+          "flow": "xtls-rprx-vision"
+        }
+      ],
+      "tls": {
+        "enabled": true,
+        "server_name": "www.microsoft.com",   //这里为伪装域名，自行修改
+        "reality": {
+          "enabled": true,
+          "handshake": {
+            "server": "www.microsoft.com",    //这里为伪装域名，自行修改
+            "server_port":443                 //这个必须为443端口
+          },
+          "private_key": "-----------",       //自动生成的私钥
+          "short_id": [
+            "-----------"                     //自动生成的short ID
+          ]
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "direct"
+    }
+  ],
+  "route": {
+    "final": "direct"
+  }
+}
