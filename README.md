@@ -39,7 +39,10 @@
     * Public Key (公钥)
     * Short ID
     * 伪装域名 (需要自行准备)
-
+6.  脚本代码好像少了一个passwd的创建，懒得改了，也不是太专业，使用其他代码获取后自行填入即可
+   1.为了防止它的不断重启，先停用sing-box（systemctl stop sing-box）
+   2.然后运行：/usr/local/bin/sing-box generate rand 16 --base64  获取符合 2022-blake3-aes-128-gcm 加密方法要求的 Base64 格式密码
+   3.nano /etc/sing-box/config.json （两台服务器上都需要填入密码，这是默认路径地址）
 ---
 
 ## 第二步：部署入口节点
