@@ -39,10 +39,26 @@
     * Public Key (公钥)
     * Short ID
     * 伪装域名 (需要自行准备)
-6.  脚本代码好像少了一个passwd的创建，懒得改了，也不是太专业，使用其他代码获取后自行填入即可
-   1.为了防止它的不断重启，先停用sing-box（systemctl stop sing-box）
-   2.然后运行：/usr/local/bin/sing-box generate rand 16 --base64  获取符合 2022-blake3-aes-128-gcm 加密方法要求的 Base64 格式密码
-   3.nano /etc/sing-box/config.json （两台服务器上都需要填入密码，这是默认路径地址）
+      
+> **注意：** 入口节点的部署脚本缺少了 Shadowsocks 密码的创建环节。请在部署 **入口节点** 后，按照以下步骤手动生成密码并填入其配置文件中。
+
+1.  **为了防止服务不断重启，先在入口节点上停用 sing-box：**
+    ```bash
+    systemctl stop sing-box
+    ```
+
+2.  **运行以下命令，生成符合 `2022-blake3-aes-128-gcm` 加密方法要求的 Base64 格式密码：**
+    ```bash
+    /usr/local/bin/sing-box generate rand 16 --base64
+    ```
+
+3.  **编辑入口节点的配置文件，将刚生成的密码粘贴进去：**
+    * 默认路径地址为 `/etc/sing-box/config.json`。
+    * 使用 `nano` 打开文件：
+        ```bash
+        nano /etc/sing-box/config.json
+        ```
+    * 找到 `"password": "..."` 字段，将其中的值替换为您生成的密码。保存文件后，再重新启动 sing-box 服务 (`systemctl start sing-box`)。
 ---
 
 ## 第二步：部署入口节点
